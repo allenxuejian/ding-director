@@ -27,11 +27,11 @@
         }
         
         .card-hover {
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .card-hover:hover {
             transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15);
         }
         
         @keyframes pulse-ring {
@@ -41,6 +41,47 @@
         
         .pulse-ring {
             animation: pulse-ring 2s ease-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+        
+        .agent-avatar {
+            transition: all 0.3s ease;
+        }
+        .agent-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+        
+        .progress-bar {
+            transition: width 1s ease-out;
+        }
+        
+        .heatmap-cell {
+            transition: all 0.2s ease;
+        }
+        .heatmap-cell:hover {
+            transform: scale(1.1);
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
     </style>
 </head>
@@ -285,7 +326,7 @@
             </div>
 
             <!-- AI 助理团队 -->
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-8">
                 <div class="flex items-center justify-between mb-6">
                     <div class="flex items-center gap-3">
                         <i data-lucide="bot" class="w-6 h-6 text-blue-500"></i>
@@ -300,7 +341,7 @@
                 <div class="grid grid-cols-4 gap-4">
                     <!-- 采样专家 -->
                     <div class="p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition cursor-pointer group">
-                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center mb-3 group-hover:scale-110 transition agent-avatar">
                             <i data-lucide="scan" class="w-6 h-6 text-white"></i>
                         </div>
                         <h4 class="font-medium text-sm">采样专家·丁一</h4>
@@ -313,7 +354,7 @@
 
                     <!-- 检测分析师 -->
                     <div class="p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition cursor-pointer group">
-                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center mb-3 group-hover:scale-110 transition agent-avatar">
                             <i data-lucide="microscope" class="w-6 h-6 text-white"></i>
                         </div>
                         <h4 class="font-medium text-sm">检测分析师·丁二</h4>
@@ -326,7 +367,7 @@
 
                     <!-- 情报专员 -->
                     <div class="p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition cursor-pointer group">
-                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center mb-3 group-hover:scale-110 transition agent-avatar">
                             <i data-lucide="rss" class="w-6 h-6 text-white"></i>
                         </div>
                         <h4 class="font-medium text-sm">情报专员·丁三</h4>
@@ -339,7 +380,7 @@
 
                     <!-- 研报生成器 -->
                     <div class="p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition cursor-pointer group">
-                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center mb-3 group-hover:scale-110 transition agent-avatar">
                             <i data-lucide="file-text" class="w-6 h-6 text-white"></i>
                         </div>
                         <h4 class="font-medium text-sm">研报助手·丁四</h4>
@@ -348,6 +389,160 @@
                             <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
                             <span class="text-xs text-blue-600">待启动</span>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 数据可视化区域 -->
+            <div class="grid grid-cols-2 gap-6">
+                
+                <!-- 监测热力图 -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-400 to-red-500 flex items-center justify-center">
+                                <i data-lucide="map" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-slate-800">全国监测热力图</h3>
+                                <p class="text-xs text-slate-500">实时疫情分布与风险等级</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs">
+                            <span class="flex items-center gap-1"><span class="w-3 h-3 bg-green-400 rounded"></span>低风险</span>
+                            <span class="flex items-center gap-1"><span class="w-3 h-3 bg-amber-400 rounded"></span>中风险</span>
+                            <span class="flex items-center gap-1"><span class="w-3 h-3 bg-red-400 rounded"></span>高风险</span>
+                        </div>
+                    </div>
+
+                    <!-- 简化热力图网格 -->
+                    <div class="grid grid-cols-8 gap-1 p-4 bg-slate-50 rounded-xl">
+                        <!-- 生成热力图格子 -->
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-300 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-amber-300 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-amber-300 rounded relative overflow-hidden">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></span>
+                            </div>
+                        </div>
+                        <div class="heatmap-cell aspect-square bg-rose-300 rounded relative overflow-hidden">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="w-2 h-2 bg-rose-500 rounded-full animate-pulse"></span>
+                            </div>
+                        </div>
+                        <div class="heatmap-cell aspect-square bg-amber-300 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-300 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-300 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-amber-300 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                    </div>
+
+                    <div class="mt-4 flex items-center justify-between text-sm">
+                        <span class="text-slate-500">监测点总数: <span class="font-semibold text-slate-700">156</span></span>
+                        <span class="text-slate-500">异常点: <span class="font-semibold text-rose-600">3</span></span>
+                        <span class="text-slate-500">更新: <span class="font-semibold text-slate-700">刚刚</span></span>
+                    </div>
+                </div>
+
+                <!-- 趋势图表 -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center">
+                                <i data-lucide="trending-up" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-slate-800">监测数据趋势</h3>
+                                <p class="text-xs text-slate-500">近7天监测数据统计</p>
+                            </div>
+                        </div>
+                        <select class="text-xs border border-slate-200 rounded-lg px-2 py-1 bg-white">
+                            <option>近7天</option>
+                            <option>近30天</option>
+                            <option>近90天</option>
+                        </select>
+                    </div>
+
+                    <!-- 简化趋势图 -->
+                    <div class="relative h-48 bg-slate-50 rounded-xl p-4">
+                        <!-- 网格线 -->
+                        <div class="absolute inset-0 p-4 flex flex-col justify-between pointer-events-none">
+                            <div class="border-t border-slate-200 border-dashed"></div>
+                            <div class="border-t border-slate-200 border-dashed"></div>
+                            <div class="border-t border-slate-200 border-dashed"></div>
+                            <div class="border-t border-slate-200"></div>
+                        </div>
+
+                        <!-- 数据线条 - 使用 SVG -->
+                        <svg class="w-full h-full" viewBox="0 0 300 120" preserveAspectRatio="none">
+                            <!-- 监测点数量线 -->
+                            <polyline
+                                fill="none"
+                                stroke="#3b82f6"
+                                stroke-width="2"
+                                points="0,80 43,75 86,60 129,55 172,45 215,40 258,35 300,30"
+                                class="progress-bar"
+                            />
+                            
+                            <!-- 异常点数量线 -->
+                            <polyline
+                                fill="none"
+                                stroke="#f43f5e"
+                                stroke-width="2"
+                                stroke-dasharray="4,4"
+                                points="0,100 43,95 86,90 129,95 172,85 215,80 258,70 300,60"
+                                class="progress-bar"
+                            />
+                            
+                            <!-- 填充区域 -->
+                            <polygon
+                                fill="rgba(59, 130, 246, 0.1)"
+                                stroke="none"
+                                points="0,80 43,75 86,60 129,55 172,45 215,40 258,35 300,30 300,120 0,120"
+                            />
+
+                            <!-- 数据点 -->
+                            <circle cx="0" cy="80" r="3" fill="#3b82f6"/>
+                            <circle cx="86" cy="60" r="3" fill="#3b82f6"/>
+                            <circle cx="172" cy="45" r="3" fill="#3b82f6"/>
+                            <circle cx="258" cy="35" r="4" fill="#3b82f6" class="animate-pulse"/>
+                        </svg>
+
+                        <!-- X轴标签 -->
+                        <div class="absolute bottom-2 left-4 right-4 flex justify-between text-xs text-slate-400">
+                            <span>2/10</span>
+                            <span>2/12</span>
+                            <span>2/14</span>
+                            <span>今天</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 flex items-center justify-center gap-6 text-sm">
+                        <span class="flex items-center gap-2">
+                            <span class="w-3 h-0.5 bg-blue-500"></span>
+                            <span class="text-slate-600">监测点数量</span>
+                        </span>
+                        <span class="flex items-center gap-2">
+                            <span class="w-3 h-0.5 bg-rose-500 border-dashed" style="border-top: 2px dashed #f43f5e; height: 0;"></span>
+                            <span class="text-slate-600">异常点数量</span>
+                        </span>
                     </div>
                 </div>
             </div>

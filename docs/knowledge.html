@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>知识星球 - 北京畜牧兽医研究所</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * { font-family: 'Inter', 'Noto Sans SC', sans-serif; }
+        
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(59, 130, 246, 0.1);
+        }
+        
+        .tag-cloud-item {
+            transition: all 0.2s ease;
+        }
+        .tag-cloud-item:hover {
+            transform: scale(1.05);
+        }
+        
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        
+        .pulse-ring {
+            animation: pulse-ring 2s ease-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+    
+    <!-- 顶部导航 -->
+    <nav class="glass fixed top-0 left-0 right-0 z-50 h-16 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <a href="index.html" class="flex items-center gap-2">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center shadow-lg">
+                        <i data-lucide="shield-check" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold gradient-text">北京畜牧兽医研究所</span>
+                        <span class="text-xs text-slate-500 ml-2 bg-blue-50 px-2 py-0.5 rounded-full">AI 疫病监测</span>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="flex items-center gap-6">
+                <a href="index.html" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition">监测中心</a>
+                <a href="knowledge.html" class="text-sm font-medium text-blue-600 hover:text-blue-700 transition flex items-center gap-1">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i>
+                    知识星球
+                </a>
+                <a href="chat.html" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition">智能问答</a>
+                <a href="research.html" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition">投研服务</a>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <div class="flex items-center gap-2 bg-green-50 px-3 py-1.5 rounded-full">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    <span class="text-xs text-green-600 font-medium">爬虫运行中</span>
+                </div>
+                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-sm font-medium">
+                    丁
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="pt-24 pb-12 px-6">
+        <div class="max-w-7xl mx-auto">
+            
+            <!-- 欢迎区 + 搜索栏 -->
+            <div class="mb-8">
+                <div class="flex items-start justify-between mb-4">
+                    <div>
+                        <h1 class="text-3xl font-bold mb-2 text-slate-800 flex items-center gap-3">
+                            <i data-lucide="sparkles" class="w-8 h-8 text-blue-500"></i>
+                            知识星球
+                        </h1>
+                        <p class="text-slate-500">
+                            实时追踪全球人兽共患病资讯，已聚合
+                            <span class="text-blue-600 font-semibold">2,456</span> 条行业动态
+                        </p>
+                    </div>
+                    
+                    <!-- 搜索框 -->
+                    <div class="w-96">
+                        <div class="relative">
+                            <input 
+                                type="text" 
+                                placeholder="搜索资讯、政策、研究..."
+                                class="w-full border border-slate-200 rounded-xl px-4 py-2.5 pl-10 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                            >
+                            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分类筛选 -->
+                <div class="flex items-center gap-3">
+                    <button class="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium shadow-sm hover:bg-blue-700 transition">
+                        <i data-lucide="list" class="w-4 h-4 inline mr-1"></i>
+                        全部
+                    </button>
+                    <button class="px-4 py-2 rounded-lg bg-white border border-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50 transition">
+                        <i data-lucide="landmark" class="w-4 h-4 inline mr-1"></i>
+                        政策
+                    </button>
+                    <button class="px-4 py-2 rounded-lg bg-white border border-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50 transition">
+                        <i data-lucide="flask" class="w-4 h-4 inline mr-1"></i>
+                        研究
+                    </button>
+                    <button class="px-4 py-2 rounded-lg bg-white border border-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50 transition">
+                        <i data-lucide="alert-triangle" class="w-4 h-4 inline mr-1"></i>
+                        疫情
+                    </button>
+                    <button class="px-4 py-2 rounded-lg bg-white border border-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50 transition">
+                        <i data-lucide="briefcase" class="w-4 h-4 inline mr-1"></i>
+                        行业
+                    </button>
+                    <div class="ml-auto flex items-center gap-2">
+                        <span class="text-xs text-slate-500">自动爬取</span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" class="sr-only peer" checked>
+                            <div class="w-11 h-6 bg-green-500 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 主体双栏布局 -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <!-- 左侧：资讯流（占 2/3） -->
+                <div class="lg:col-span-2 space-y-4">
+                    
+                    <!-- 资讯卡片 1 - 热点 -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden card-hover">
+                        <div class="p-5">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs bg-red-100 text-red-600 px-2.5 py-1 rounded-full font-medium">🔥 热点</span>
+                                    <span class="text-xs text-slate-400">中国农业科学院</span>
+                                    <span class="text-xs text-slate-300">•</span>
+                                    <span class="text-xs text-slate-400">2 小时前</span>
+                                </div>
+                                <button class="p-1 hover:bg-slate-100 rounded">
+                                    <i data-lucide="bookmark" class="w-4 h-4 text-slate-400"></i>
+                                </button>
+                            </div>
+                            
+                            <h3 class="text-lg font-semibold text-slate-800 mb-2 hover:text-blue-600 cursor-pointer transition">
+                                非洲猪瘟疫苗研究取得突破性进展，保护率提升至 85%
+                            </h3>
+                            
+                            <p class="text-sm text-slate-600 mb-4 leading-relaxed">
+                                中国农业科学院哈尔滨兽医研究所最新研究表明，新型非洲猪瘟减毒活疫苗在临床试验中表现优异，保护率从此前的 72% 提升至 85%，标志着我国在非洲猪瘟防控领域取得重大突破...
+                            </p>
+                            
+                            <div class="flex items-center gap-3 mb-3">
+                                <img src="https://picsum.photos/seed/asf1/600/300" alt="疫苗研究" class="w-full h-48 object-cover rounded-lg">
+                            </div>
+                            
+                            <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+                                <div class="flex items-center gap-3 text-xs text-slate-500">
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="eye" class="w-3 h-3"></i>
+                                        1,234
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="message-circle" class="w-3 h-3"></i>
+                                        45
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded">疫苗</span>
+                                    <span class="text-xs bg-purple-50 text-purple-600 px-2 py-1 rounded">非洲猪瘟</span>
+                                    <span class="text-xs bg-cyan-50 text-cyan-600 px-2 py-1 rounded">研究突破</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 资讯卡片 2 - 政策 -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden card-hover">
+                        <div class="p-5">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs bg-blue-100 text-blue-600 px-2.5 py-1 rounded-full font-medium">📋 政策</span>
+                                    <span class="text-xs text-slate-400">农业农村部</span>
+                                    <span class="text-xs text-slate-300">•</span>
+                                    <span class="text-xs text-slate-400">5 小时前</span>
+                                </div>
+                                <button class="p-1 hover:bg-slate-100 rounded">
+                                    <i data-lucide="bookmark" class="w-4 h-4 text-slate-400"></i>
+                                </button>
+                            </div>
+                            
+                            <h3 class="text-lg font-semibold text-slate-800 mb-2 hover:text-blue-600 cursor-pointer transition">
+                                农业农村部发布新版《动物防疫法》实施细则
+                            </h3>
+                            
+                            <p class="text-sm text-slate-600 mb-4 leading-relaxed">
+                                为进一步规范动物防疫工作，保障养殖业生产安全，农业农村部于今日正式发布新版《动物防疫法实施条例》，新增生物安全管理、疫病监测预警等章节，将于 2025 年 3 月 1 日起正式实施。
+                            </p>
+                            
+                            <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+                                <div class="flex items-center gap-3 text-xs text-slate-500">
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="eye" class="w-3 h-3"></i>
+                                        856
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="message-circle" class="w-3 h-3"></i>
+                                        23
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded">政策法规</span>
+                                    <span class="text-xs bg-amber-50 text-amber-600 px-2 py-1 rounded">动物防疫</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 资讯卡片 3 - 疫情 -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden card-hover border-l-4 border-l-amber-500">
+                        <div class="p-5">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs bg-amber-100 text-amber-600 px-2.5 py-1 rounded-full font-medium">⚠️ 疫情</span>
+                                    <span class="text-xs text-slate-400">内蒙古防控中心</span>
+                                    <span class="text-xs text-slate-300">•</span>
+                                    <span class="text-xs text-slate-400">1 天前</span>
+                                </div>
+                                <button class="p-1 hover:bg-slate-100 rounded">
+                                    <i data-lucide="bookmark" class="w-4 h-4 text-slate-400"></i>
+                                </button>
+                            </div>
+                            
+                            <h3 class="text-lg font-semibold text-slate-800 mb-2 hover:text-blue-600 cursor-pointer transition">
+                                内蒙古 3 个监测点发现布鲁氏菌病疑似阳性样本
+                            </h3>
+                            
+                            <p class="text-sm text-slate-600 mb-4 leading-relaxed">
+                                内蒙古自治区动物疫病预防控制中心通报，近期在呼伦贝尔、赤峰、通辽三地监测点采集的样本中发现布鲁氏菌病疑似阳性反应，目前已启动应急响应机制，相关养殖场已实施临时管控措施。
+                            </p>
+                            
+                            <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-3">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-600"></i>
+                                    <span class="text-xs font-medium text-amber-700">防控措施</span>
+                                </div>
+                                <ul class="text-xs text-amber-700 space-y-1 list-disc list-inside">
+                                    <li>相关养殖场实施临时管控</li>
+                                    <li>采样复检与流行病学调查同步进行</li>
+                                    <li>周边 5 公里范围内监测点加密采样</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+                                <div class="flex items-center gap-3 text-xs text-slate-500">
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="eye" class="w-3 h-3"></i>
+                                        2,103
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="message-circle" class="w-3 h-3"></i>
+                                        67
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs bg-red-50 text-red-600 px-2 py-1 rounded">布鲁氏菌</span>
+                                    <span class="text-xs bg-amber-50 text-amber-600 px-2 py-1 rounded">疫情监测</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 资讯卡片 4 - 行业 -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden card-hover">
+                        <div class="p-5">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs bg-purple-100 text-purple-600 px-2.5 py-1 rounded-full font-medium">📊 行业</span>
+                                    <span class="text-xs text-slate-400">全球市场研究</span>
+                                    <span class="text-xs text-slate-300">•</span>
+                                    <span class="text-xs text-slate-400">1 天前</span>
+                                </div>
+                                <button class="p-1 hover:bg-slate-100 rounded">
+                                    <i data-lucide="bookmark" class="w-4 h-4 text-slate-400"></i>
+                                </button>
+                            </div>
+                            
+                            <h3 class="text-lg font-semibold text-slate-800 mb-2 hover:text-blue-600 cursor-pointer transition">
+                                2025 年全球人兽共患病市场规模预计突破 120 亿美元
+                            </h3>
+                            
+                            <p class="text-sm text-slate-600 mb-4 leading-relaxed">
+                                最新报告显示，随着全球生物安全意识提升和疫病监测技术进步，人兽共患病防控市场持续扩大。预计 2025 年全球市场规模将达到 120 亿美元，年复合增长率 8.3%。
+                            </p>
+                            
+                            <div class="grid grid-cols-3 gap-3 mb-3">
+                                <div class="bg-slate-50 rounded-lg p-3 text-center">
+                                    <p class="text-xs text-slate-500 mb-1">市场规模</p>
+                                    <p class="text-lg font-bold text-blue-600">$120B</p>
+                                </div>
+                                <div class="bg-slate-50 rounded-lg p-3 text-center">
+                                    <p class="text-xs text-slate-500 mb-1">年增长率</p>
+                                    <p class="text-lg font-bold text-green-600">8.3%</p>
+                                </div>
+                                <div class="bg-slate-50 rounded-lg p-3 text-center">
+                                    <p class="text-xs text-slate-500 mb-1">覆盖国家</p>
+                                    <p class="text-lg font-bold text-purple-600">120+</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+                                <div class="flex items-center gap-3 text-xs text-slate-500">
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="eye" class="w-3 h-3"></i>
+                                        1,567
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="message-circle" class="w-3 h-3"></i>
+                                        34
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs bg-purple-50 text-purple-600 px-2 py-1 rounded">市场分析</span>
+                                    <span class="text-xs bg-cyan-50 text-cyan-600 px-2 py-1 rounded">行业报告</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 资讯卡片 5 - 研究 -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden card-hover">
+                        <div class="p-5">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs bg-cyan-100 text-cyan-600 px-2.5 py-1 rounded-full font-medium">🔬 研究</span>
+                                    <span class="text-xs text-slate-400">Nature 子刊</span>
+                                    <span class="text-xs text-slate-300">•</span>
+                                    <span class="text-xs text-slate-400">2 天前</span>
+                                </div>
+                                <button class="p-1 hover:bg-slate-100 rounded">
+                                    <i data-lucide="bookmark" class="w-4 h-4 text-slate-400"></i>
+                                </button>
+                            </div>
+                            
+                            <h3 class="text-lg font-semibold text-slate-800 mb-2 hover:text-blue-600 cursor-pointer transition">
+                                AI 驱动的病原体快速检测技术准确率达 99.2%
+                            </h3>
+                            
+                            <p class="text-sm text-slate-600 mb-4 leading-relaxed">
+                                《Nature Communications》发表最新研究成果，基于深度学习的病原体快速检测系统在多病原体同步筛查中表现出色，检测时间从传统的 48 小时缩短至 2 小时，准确率高达 99.2%。
+                            </p>
+                            
+                            <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+                                <div class="flex items-center gap-3 text-xs text-slate-500">
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="eye" class="w-3 h-3"></i>
+                                        934
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="message-circle" class="w-3 h-3"></i>
+                                        18
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs bg-cyan-50 text-cyan-600 px-2 py-1 rounded">AI 检测</span>
+                                    <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded">技术突破</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 加载更多 -->
+                    <div class="text-center py-6">
+                        <button class="px-6 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-600 hover:bg-slate-50 hover:border-blue-300 transition flex items-center gap-2 mx-auto">
+                            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                            加载更多资讯
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 右侧边栏 -->
+                <div class="space-y-6">
+                    
+                    <!-- 自动爬取状态 -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-semibold text-slate-800 flex items-center gap-2">
+                                <i data-lucide="bot" class="w-5 h-5 text-blue-500"></i>
+                                智能爬虫
+                            </h3>
+                            <div class="relative">
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                                <div class="absolute inset-0 bg-green-500 rounded-full pulse-ring"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-slate-600">今日采集</span>
+                                <span class="font-semibold text-blue-600">156 条</span>
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-slate-600">待审核</span>
+                                <span class="font-semibold text-amber-600">23 条</span>
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-slate-600">已发布</span>
+                                <span class="font-semibold text-green-600">133 条</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 pt-4 border-t border-slate-100">
+                            <div class="flex items-center justify-between text-xs text-slate-500 mb-2">
+                                <span>下次更新</span>
+                                <span>15:30</span>
+                            </div>
+                            <div class="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full shimmer" style="width: 65%"></div>
+                            </div>
+                        </div>
+                        
+                        <button class="w-full mt-4 py-2 bg-blue-50 text-blue-600 rounded-lg text-sm hover:bg-blue-100 transition">
+                            <i data-lucide="play" class="w-4 h-4 inline mr-1"></i>
+                            立即采集
+                        </button>
+                    </div>
+
+                    <!-- 热门标签云 -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
+                        <h3 class="font-semibold text-slate-800 mb-4 flex items-center gap-2">
+                            <i data-lucide="hash" class="w-5 h-5 text-purple-500"></i>
+                            热门标签
+                        </h3>
+                        
+                        <div class="flex flex-wrap gap-2">
+                            <button class="tag-cloud-item text-xs bg-red-50 text-red-600 px-3 py-1.5 rounded-full hover:bg-red-100 font-medium">
+                                非洲猪瘟 <span class="text-red-400">1.2K</span>
+                            </button>
+                            <button class="tag-cloud-item text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded-full hover:bg-blue-100">
+                                疫苗研发 <span class="text-blue-400">856</span>
+                            </button>
+                            <button class="tag-cloud-item text-xs bg-purple-50 text-purple-600 px-3 py-1.5 rounded-full hover:bg-purple-100">
+                                布鲁氏菌 <span class="text-purple-400">734</span>
+                            </button>
+                            <button class="tag-cloud-item text-xs bg-amber-50 text-amber-600 px-3 py-1.5 rounded-full hover:bg-amber-100">
+                                生物安全 <span class="text-amber-400">623</span>
+                            </button>
+                            <button class="tag-cloud-item text-xs bg-cyan-50 text-cyan-600 px-3 py-1.5 rounded-full hover:bg-cyan-100">
+                                AI 检测 <span class="text-cyan-400">567</span>
+                            </button>
+                            <button class="tag-cloud-item text-xs bg-green-50 text-green-600 px-3 py-1.5 rounded-full hover:bg-green-100">
+                                政策法规 <span class="text-green-400">489</span>
+                            </button>
+                            <button class="tag-cloud-item text-xs bg-slate-50 text-slate-600 px-3 py-1.5 rounded-full hover:bg-slate-100">
+                                市场分析 <span class="text-slate-400">412</span>
+                            </button>
+                            <button class="tag-cloud-item text-xs bg-indigo-50 text-indigo-600 px-3 py-1.5 rounded-full hover:bg-indigo-100">
+                                禽流感 <span class="text-indigo-400">398</span>
+                            </button>
+                            <button class="tag-cloud-item text-xs bg-pink-50 text-pink-600 px-3 py-1.5 rounded-full hover:bg-pink-100">
+                                口蹄疫 <span class="text-pink-400">356</span>
+                            </button>
+                            <button class="tag-cloud-item text-xs bg-orange-50 text-orange-600 px-3 py-1.5 rounded-full hover:bg-orange-100">
+                                疫情监测 <span class="text-orange-400">324</span>
+                            </button>
+                        </div>
+                        
+                        <button class="w-full mt-4 text-xs text-blue-600 hover:text-blue-700 py-1">
+                            查看全部标签 →
+                        </button>
+                    </div>
+
+                    <!-- 推荐阅读 -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
+                        <h3 class="font-semibold text-slate-800 mb-4 flex items-center gap-2">
+                            <i data-lucide="star" class="w-5 h-5 text-amber-500"></i>
+                            推荐阅读
+                        </h3>
+                        
+                        <div class="space-y-3">
+                            <div class="pb-3 border-b border-slate-100 last:border-0 last:pb-0 cursor-pointer hover:bg-slate-50 -mx-2 px-2 rounded transition">
+                                <h4 class="text-sm font-medium text-slate-800 mb-1 hover:text-blue-600">
+                                    全球人兽共患病防控白皮书（2025）
+                                </h4>
+                                <div class="flex items-center gap-2 text-xs text-slate-500">
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="eye" class="w-3 h-3"></i>
+                                        3.2K
+                                    </span>
+                                    <span>•</span>
+                                    <span>3 天前</span>
+                                </div>
+                            </div>
+                            
+                            <div class="pb-3 border-b border-slate-100 last:border-0 last:pb-0 cursor-pointer hover:bg-slate-50 -mx-2 px-2 rounded transition">
+                                <h4 class="text-sm font-medium text-slate-800 mb-1 hover:text-blue-600">
+                                    CAAS 发布年度疫病监测技术指南
+                                </h4>
+                                <div class="flex items-center gap-2 text-xs text-slate-500">
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="eye" class="w-3 h-3"></i>
+                                        2.8K
+                                    </span>
+                                    <span>•</span>
+                                    <span>5 天前</span>
+                                </div>
+                            </div>
+                            
+                            <div class="pb-3 border-b border-slate-100 last:border-0 last:pb-0 cursor-pointer hover:bg-slate-50 -mx-2 px-2 rounded transition">
+                                <h4 class="text-sm font-medium text-slate-800 mb-1 hover:text-blue-600">
+                                    生物安全实验室建设标准更新解读
+                                </h4>
+                                <div class="flex items-center gap-2 text-xs text-slate-500">
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="eye" class="w-3 h-3"></i>
+                                        1.9K
+                                    </span>
+                                    <span>•</span>
+                                    <span>1 周前</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 数据来源 -->
+                    <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl border border-blue-100 p-5">
+                        <h3 class="font-semibold text-slate-800 mb-3 text-sm">数据来源</h3>
+                        <div class="space-y-2 text-xs text-slate-600">
+                            <div class="flex items-center gap-2">
+                                <div class="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+                                <span>中国农业科学院</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-1.5 h-1.5 bg-purple-500 rounded-full"></div>
+                                <span>农业农村部</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></div>
+                                <span>国家基因库</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-1.5 h-1.5 bg-amber-500 rounded-full"></div>
+                                <span>WHO / OIE</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
+                                <span>Nature / Science</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+        
+        // 分类筛选交互
+        const categoryButtons = document.querySelectorAll('button[class*="px-4 py-2"]');
+        categoryButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                categoryButtons.forEach(b => {
+                    b.classList.remove('bg-blue-600', 'text-white', 'shadow-sm');
+                    b.classList.add('bg-white', 'border-slate-200', 'text-slate-600');
+                });
+                this.classList.add('bg-blue-600', 'text-white', 'shadow-sm');
+                this.classList.remove('bg-white', 'border-slate-200', 'text-slate-600');
+            });
+        });
+    </script>
+</body>
+</html>
+<!-- Refresh: 2026年 2月17日 星期二 10时31分29秒 CST -->

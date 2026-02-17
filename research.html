@@ -9,15 +9,8 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         * { font-family: 'Inter', 'Noto Sans SC', sans-serif; }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .glass { background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); }
         .gradient-text { background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .card-hover:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(59, 130, 246, 0.1); }
-        .report-card { transition: all 0.3s ease; border-left: 4px solid transparent; }
-        .report-card:hover { border-left-color: #3b82f6; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen">
@@ -25,148 +18,26 @@
         <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <a href="index.html" class="flex items-center gap-2">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center shadow-lg">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center">
                         <i data-lucide="shield-check" class="w-6 h-6 text-white"></i>
                     </div>
-                    <div>
-                        <span class="text-xl font-bold gradient-text">北京畜牧兽医研究所</span>
-                        <span class="text-xs text-slate-500 ml-2 bg-blue-50 px-2 py-0.5 rounded-full">AI 疫病监测</span>
-                    </div>
+                    <span class="text-xl font-bold gradient-text">北京畜牧兽医研究所</span>
                 </a>
             </div>
-            
             <div class="flex items-center gap-6">
-                <a href="index.html" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition">监测中心</a>
-                <a href="knowledge.html" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition">知识星球</a>
-                <a href="chat.html" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition">智能问答</a>
-                <a href="research.html" class="text-sm font-medium text-blue-600 hover:text-blue-700 transition flex items-center gap-1">
-                    <i data-lucide="trending-up" class="w-4 h-4"></i>
-                    投研服务
-                </a>
-            </div>
-            
-            <div class="flex items-center gap-3">
-                <div class="flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-full">
-                    <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
-                    <span class="text-xs text-blue-600 font-medium">研报生成就绪</span>
-                </div>
-                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white text-sm font-medium">
-                    丁
-                </div>
+                <a href="index.html" class="text-sm font-medium text-slate-600 hover:text-blue-600">监测中心</a>
+                <a href="knowledge.html" class="text-sm font-medium text-slate-600 hover:text-blue-600">知识星球</a>
+                <a href="chat.html" class="text-sm font-medium text-slate-600 hover:text-blue-600">智能问答</a>
+                <a href="research.html" class="text-sm font-medium text-blue-600">投研服务</a>
             </div>
         </div>
     </nav>
-
     <main class="pt-24 pb-12 px-6">
         <div class="max-w-7xl mx-auto">
-            <div class="mb-8">
-                <div class="flex items-start justify-between">
-                    <div>
-                        <h1 class="text-3xl font-bold mb-2 text-slate-800 flex items-center gap-3">
-                            <i data-lucide="trending-up" class="w-8 h-8 text-blue-500"></i>
-                            投研服务
-                        </h1>
-                        <p class="text-slate-500">AI 驱动的行业研究报告生成平台</p>
-                    </div>
-                    
-                    <button class="px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-xl font-medium shadow-lg hover:shadow-xl transition flex items-center gap-2">
-                        <i data-lucide="sparkles" class="w-5 h-5"></i>
-                        生成新研报
-                    </button>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-2 space-y-4">
-                    <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-4 flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <button class="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium shadow-sm">全部研报</button>
-                            <button class="px-4 py-2 rounded-lg bg-white border border-slate-200 text-slate-600 text-sm hover:bg-slate-50 transition">行业分析</button>
-                            <button class="px-4 py-2 rounded-lg bg-white border border-slate-200 text-slate-600 text-sm hover:bg-slate-50 transition">疫情报告</button>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden report-card">
-                        <div class="p-5">
-                            <div class="flex items-start justify-between mb-3">
-                                <div class="flex items-center gap-2">
-                                    <span class="text-xs bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-2.5 py-1 rounded-full font-medium">✨ 最新</span>
-                                    <span class="text-xs text-slate-400">今天 09:30</span>
-                                </div>
-                            </div>
-                            
-                            <h3 class="text-lg font-semibold text-slate-800 mb-2">2025 年 Q1 全球人兽共患病市场分析报告</h3>
-                            
-                            <p class="text-sm text-slate-600 mb-4">本报告基于全球 50+ 国家和地区的疫病监测数据分析...</p>
-                            
-                            <div class="flex items-center justify-between pt-3 border-t border-slate-100">
-                                <div class="flex items-center gap-3 text-xs text-slate-500">
-                                    <span>浏览 234</span>
-                                    <span>下载 45</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded">市场分析</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden report-card">
-                        <div class="p-5">
-                            <div class="flex items-start justify-between mb-3">
-                                <div class="flex items-center gap-2">
-                                    <span class="text-xs bg-amber-100 text-amber-600 px-2.5 py-1 rounded-full font-medium">📊 行业</span>
-                                    <span class="text-xs text-slate-400">昨天 14:20</span>
-                                </div>
-                            </div>
-                            
-                            <h3 class="text-lg font-semibold text-slate-800 mb-2">中国非洲猪瘟疫苗研发进展与产业化前景分析</h3>
-                            
-                            <p class="text-sm text-slate-600 mb-4">深度分析国内主要非洲猪瘟疫苗研发机构的最新进展...</p>
-                            
-                            <div class="flex items-center justify-between pt-3 border-t border-slate-100">
-                                <div class="flex items-center gap-3 text-xs text-slate-500">
-                                    <span>浏览 567</span>
-                                    <span>下载 128</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="space-y-6">
-                    <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border border-amber-200 p-5">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-md">
-                                <i data-lucide="file-text" class="w-6 h-6 text-white"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-slate-800">研报助手·丁四</h3>
-                                <p class="text-xs text-slate-500">AI 投研分析专家</p>
-                            </div>
-                        </div>
-                        
-                        <p class="text-sm text-slate-600 mb-4">我可以帮您生成专业的行业研究报告。</p>
-                        
-                        <button class="w-full py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg text-sm font-medium hover:shadow-md transition">
-                            <i data-lucide="sparkles" class="w-4 h-4 inline mr-1"></i>
-                            开始生成研报
-                        </button>
-                    </div>
-
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
-                        <h3 class="font-semibold text-slate-800 mb-4">研报统计</h3>
-                        
-                        <div class="text-center">
-                            <p class="text-2xl font-bold text-slate-800">128</p>
-                            <p class="text-xs text-slate-500">累计生成研报</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <h1 class="text-3xl font-bold mb-8">投研服务</h1>
+            <p class="text-slate-500">AI研报生成平台</p>
         </div>
     </main>
-
     <script>lucide.createIcons();</script>
 </body>
 </html>

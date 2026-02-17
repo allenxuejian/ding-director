@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据报告 - 北京畜牧兽医研究所</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * { font-family: 'Inter', 'Noto Sans SC', sans-serif; }
+        
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .animate-slide-in {
+            animation: slideIn 0.5s ease-out forwards;
+        }
+        
+        .report-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .report-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+    
+    <!-- 顶部导航 -->
+    <nav class="glass fixed top-0 left-0 right-0 z-50 h-16 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <a href="index.html" class="flex items-center gap-2">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center shadow-lg">
+                        <i data-lucide="shield-check" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <span class="text-xl font-bold gradient-text">北京畜牧兽医研究所</span>
+                </a>
+                <span class="text-slate-300">/</span>
+                <span class="text-sm text-slate-600">数据报告</span>
+            </div>
+            
+            <div class="flex items-center gap-6">
+                <a href="index.html" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition">监测中心</a>
+                <a href="index.html" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition">情报中心</a>
+                <a href="chat.html" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition">智能问答</a>
+                <a href="#" class="text-sm font-medium text-blue-600 transition">数据报告</a>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <button class="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-sm transition">
+                    <i data-lucide="download" class="w-4 h-4"></i>
+                    导出报告
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容 -->
+    <main class="pt-24 pb-12 px-6">
+        <div class="max-w-7xl mx-auto">
+            
+            <!-- 报告筛选 -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-6">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm text-slate-600">报告类型</span>
+                            <select class="border border-slate-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:border-blue-500">
+                                <option>全部报告</option>
+                                <option>监测日报</option>
+                                <option>周报</option>
+                                <option>月报</option>
+                                <option>行业研报</option>
+                            </select>
+                        </div>
+                        
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm text-slate-600">时间范围</span>
+                            <select class="border border-slate-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:border-blue-500">
+                                <option>最近30天</option>
+                                <option>最近7天</option>
+                                <option>最近90天</option>
+                                <option>自定义</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-2">
+                        <button class="p-2 rounded-lg hover:bg-slate-100 transition">
+                            <i data-lucide="search" class="w-5 h-5 text-slate-400"></i>
+                        </button>
+                        <button class="p-2 rounded-lg hover:bg-slate-100 transition">
+                            <i data-lucide="filter" class="w-5 h-5 text-slate-400"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 报告列表 -->
+            <div class="space-y-4">
+                
+                <!-- 报告1 - AI生成 -->
+                <div class="report-card bg-white rounded-2xl shadow-sm border border-slate-100 p-6 animate-slide-in">
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-start gap-4">
+                            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="file-text" class="w-7 h-7 text-white"></i>
+                            </div>
+                            
+                            <div>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-xs bg-purple-100 text-purple-600 px-2 py-0.5 rounded-full">AI生成</span>
+                                    <span class="text-xs bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full">行业研报</span>
+                                </div>
+                                <h3 class="font-semibold text-lg text-slate-800 mb-1">2025年Q1全球人兽共患病市场分析报告</h3>
+                                <p class="text-sm text-slate-500 mb-3">涵盖布鲁氏菌病、结核病、炭疽等主要疫病的全球分布、趋势预测及投资建议。</p>
+                                
+                                <div class="flex items-center gap-4 text-xs text-slate-400">
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="calendar" class="w-3 h-3"></i>
+                                        2026-02-16
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="clock" class="w-3 h-3"></i>
+                                        生成耗时 2分34秒
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="eye" class="w-3 h-3"></i>
+                                        156 次查看
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-2">
+                            <button class="p-2 rounded-lg hover:bg-slate-100 transition" title="预览">
+                                <i data-lucide="eye" class="w-5 h-5 text-slate-400"></i>
+                            </button>
+                            <button class="p-2 rounded-lg hover:bg-slate-100 transition" title="下载">
+                                <i data-lucide="download" class="w-5 h-5 text-slate-400"></i>
+                            </button>
+                            <button class="p-2 rounded-lg hover:bg-slate-100 transition" title="分享">
+                                <i data-lucide="share-2" class="w-5 h-5 text-slate-400"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 报告2 - 监测日报 -->
+                <div class="report-card bg-white rounded-2xl shadow-sm border border-slate-100 p-6 animate-slide-in">
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-start gap-4">
+                            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="activity" class="w-7 h-7 text-white"></i>
+                            </div>
+                            
+                            <div>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-xs bg-green-100 text-green-600 px-2 py-0.5 rounded-full">监测日报</span>
+                                    <span class="text-xs bg-amber-100 text-amber-600 px-2 py-0.5 rounded-full">有异常</span>
+                                </div>
+                                <h3 class="font-semibold text-lg text-slate-800 mb-1">养殖场A监测日报 - 2026年2月16日</h3>
+                                <p class="text-sm text-slate-500 mb-3">今日监测24个采样点，发现3个异常点需复检。布鲁氏菌、炭疽监测正常。</p>
+                                
+                                <div class="flex items-center gap-4 text-xs text-slate-400">
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="calendar" class="w-3 h-3"></i>
+                                        2026-02-16
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="check-circle" class="w-3 h-3"></i>
+                                        24/24 监测点完成
+                                    </span>
+                                    <span class="flex items-center gap-1 text-amber-600">
+                                        <i data-lucide="alert-triangle" class="w-3 h-3"></i>
+                                        3 个异常
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-2">
+                            <button class="p-2 rounded-lg hover:bg-slate-100 transition">
+                                <i data-lucide="eye" class="w-5 h-5 text-slate-400"></i>
+                            </button>
+                            <button class="p-2 rounded-lg hover:bg-slate-100 transition">
+                                <i data-lucide="download" class="w-5 h-5 text-slate-400"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 报告3 - 周报 -->
+                <div class="report-card bg-white rounded-2xl shadow-sm border border-slate-100 p-6 animate-slide-in">
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-start gap-4">
+                            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="bar-chart-2" class="w-7 h-7 text-white"></i>
+                            </div>
+                            
+                            <div>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-xs bg-cyan-100 text-cyan-600 px-2 py-0.5 rounded-full">周报</span>
+                                </div>
+                                <h3 class="font-semibold text-lg text-slate-800 mb-1">全国监测站点周报 - 第7周</h3>
+                                <p class="text-sm text-slate-500 mb-3">本周新增监测点12个，系统覆盖率提升至98.5%。各区域监测数据正常，无重大疫情预警。</p>
+                                
+                                <div class="flex items-center gap-4 text-xs text-slate-400">
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="calendar" class="w-3 h-3"></i>
+                                        2026-02-10 ~ 2026-02-16
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="trending-up" class="w-3 h-3"></i>
+                                        覆盖率 +2.3%
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-2">
+                            <button class="p-2 rounded-lg hover:bg-slate-100 transition">
+                                <i data-lucide="eye" class="w-5 h-5 text-slate-400"></i>
+                            </button>
+                            <button class="p-2 rounded-lg hover:bg-slate-100 transition">
+                                <i data-lucide="download" class="w-5 h-5 text-slate-400"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 报告4 - 行业研报 -->
+                <div class="report-card bg-white rounded-2xl shadow-sm border border-slate-100 p-6 animate-slide-in">
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-start gap-4">
+                            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="globe" class="w-7 h-7 text-white"></i>
+                            </div>
+                            
+                            <div>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-xs bg-purple-100 text-purple-600 px-2 py-0.5 rounded-full">AI生成</span>
+                                    <span class="text-xs bg-amber-100 text-amber-600 px-2 py-0.5 rounded-full">行业研报</span>
+                                </div>
+                                <h3 class="font-semibold text-lg text-slate-800 mb-1">非洲猪瘟疫苗研发进展与投资机遇</h3>
+                                <p class="text-sm text-slate-500 mb-3">深度分析非洲猪瘟疫苗研发现状、主要企业布局、技术路线对比及未来投资机会。</p>
+                                
+                                <div class="flex items-center gap-4 text-xs text-slate-400">
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="calendar" class="w-3 h-3"></i>
+                                        2026-02-15
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="clock" class="w-3 h-3"></i>
+                                        生成耗时 4分12秒
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="eye" class="w-3 h-3"></i>
+                                        89 次查看
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-2">
+                            <button class="p-2 rounded-lg hover:bg-slate-100 transition">
+                                <i data-lucide="eye" class="w-5 h-5 text-slate-400"></i>
+                            </button>
+                            <button class="p-2 rounded-lg hover:bg-slate-100 transition">
+                                <i data-lucide="download" class="w-5 h-5 text-slate-400"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 分页 -->
+            <div class="flex items-center justify-center gap-2 mt-8">
+                <button class="p-2 rounded-lg border border-slate-200 hover:bg-slate-50 transition disabled:opacity-50" disabled>
+                    <i data-lucide="chevron-left" class="w-5 h-5 text-slate-400"></i>
+                </button>
+                <button class="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm">1</button>
+                <button class="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm">2</button>
+                <button class="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm">3</button>
+                <span class="text-slate-400">...</span>
+                <button class="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm">10</button>
+                <button class="p-2 rounded-lg border border-slate-200 hover:bg-slate-50 transition">
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400"></i>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

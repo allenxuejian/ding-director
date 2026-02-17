@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>北京畜牧兽医研究所 - 智能疫病监测预警平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * { font-family: 'Inter', 'Noto Sans SC', sans-serif; }
+        
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15);
+        }
+        
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        
+        .pulse-ring {
+            animation: pulse-ring 2s ease-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+        
+        .agent-avatar {
+            transition: all 0.3s ease;
+        }
+        .agent-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+        
+        .progress-bar {
+            transition: width 1s ease-out;
+        }
+        
+        .heatmap-cell {
+            transition: all 0.2s ease;
+        }
+        .heatmap-cell:hover {
+            transform: scale(1.1);
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-hidden {
+                display: none !important;
+            }
+            
+            .mobile-full {
+                width: 100% !important;
+            }
+            
+            .mobile-stack {
+                flex-direction: column !important;
+            }
+            
+            .mobile-grid-1 {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .mobile-grid-2 {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+    
+    <!-- 顶部导航 -->
+    <nav class="glass fixed top-0 left-0 right-0 z-50 h-16 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center shadow-lg">
+                    <i data-lucide="shield-check" class="w-6 h-6 text-white"></i>
+                </div>
+                <div>
+                    <span class="text-xl font-bold gradient-text">北京畜牧兽医研究所</span>
+                    <span class="text-xs text-slate-500 ml-2 bg-blue-50 px-2 py-0.5 rounded-full">AI 疫病监测</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-6">
+                <a href="#" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition">监测中心</a>
+                <a href="#" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition">情报中心</a>
+                <a href="chat.html" class="text-sm font-medium text-blue-600 hover:text-blue-700 transition flex items-center gap-1">
+                    <i data-lucide="message-square" class="w-4 h-4"></i>
+                    智能问答
+                </a>
+                <a href="report.html" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition">数据报告</a>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <div class="flex items-center gap-2 bg-green-50 px-3 py-1.5 rounded-full">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    <span class="text-xs text-green-600 font-medium">系统正常</span>
+                </div>
+                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-sm font-medium">
+                    丁
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="pt-24 pb-12 px-6">
+        <div class="max-w-7xl mx-auto">
+            
+            <!-- 欢迎区 -->
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold mb-2 text-slate-800">智能疫病监测预警平台</h1>
+                <p class="text-slate-500">
+                    今日监测 <span class="text-blue-600 font-semibold">24</span> 个疫点，
+                    <span class="text-amber-600 font-semibold">3</span> 个预警待处理，
+                    <span class="text-cyan-600 font-semibold">6</span> 个 AI 助理正在分析
+                </p>
+            </div>
+
+            <!-- 核心数据卡片 -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 card-hover">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+                            <i data-lucide="activity" class="w-5 h-5 text-blue-500"></i>
+                        </div>
+                        <span class="text-xs text-slate-400">实时</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-800">98.5%</h3>
+                    <p class="text-sm text-slate-500">监测覆盖率</p>
+                    <div class="mt-2 flex items-center gap-1 text-xs text-green-500">
+                        <i data-lucide="trending-up" class="w-3 h-3"></i>
+                        <span>+2.3%</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 card-hover">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
+                            <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-500"></i>
+                        </div>
+                        <span class="text-xs text-slate-400">今日</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-amber-600">3</h3>
+                    <p class="text-sm text-slate-500">风险预警</p>
+                    <div class="mt-2 flex items-center gap-1 text-xs text-amber-500">
+                        <span>待处理</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 card-hover">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-50 flex items-center justify-center">
+                            <i data-lucide="file-text" class="w-5 h-5 text-cyan-500"></i>
+                        </div>
+                        <span class="text-xs text-slate-400">本周</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-cyan-600">12</h3>
+                    <p class="text-sm text-slate-500">行业研报</p>
+                    <div class="mt-2 flex items-center gap-1 text-xs text-cyan-500">
+                        <span>AI生成</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 card-hover">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center">
+                            <i data-lucide="globe" class="w-5 h-5 text-purple-500"></i>
+                        </div>
+                        <span class="text-xs text-slate-400">全球</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-purple-600">156</h3>
+                    <p class="text-sm text-slate-500">监测站点</p>
+                    <div class="mt-2 flex items-center gap-1 text-xs text-purple-500">
+                        <span>覆盖29国</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 双栏布局 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                
+                <!-- 左侧：疫病监测 -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                    <div class="p-4 border-b border-slate-100 bg-gradient-to-r from-blue-50 to-white">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-blue-500 flex items-center justify-center">
+                                    <i data-lucide="scan-line" class="w-5 h-5 text-white"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-slate-800">疫病监测中心</h3>
+                                    <p class="text-xs text-slate-500">实时采样与AI决策</p>
+                                </div>
+                            </div>
+                            <a href="#" class="text-sm text-blue-600 hover:text-blue-700">查看全部</a>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 space-y-3">
+                        <!-- 监测点1 -->
+                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-blue-50 transition cursor-pointer">
+                            <div class="flex items-center gap-3">
+                                <div class="relative">
+                                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                                    <div class="absolute inset-0 bg-green-500 rounded-full pulse-ring"></div>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium">养殖场A-猪舍监测点</h4>
+                                    <p class="text-xs text-slate-500">布鲁氏菌监测 · 正常</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-medium">36.5°C</p>
+                                <p class="text-xs text-slate-400">2分钟前</p>
+                            </div>
+                        </div>
+
+                        <!-- 监测点2 -->
+                        <div class="flex items-center justify-between p-3 bg-amber-50 rounded-xl hover:bg-amber-100 transition cursor-pointer border border-amber-200">
+                            <div class="flex items-center gap-3">
+                                <div class="w-3 h-3 bg-amber-500 rounded-full animate-pulse"></div>
+                                <div>
+                                    <h4 class="text-sm font-medium">屠宰场B-检疫点</h4>
+                                    <p class="text-xs text-amber-600">结核菌疑似 · 需复检</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-xs bg-amber-500 text-white px-2 py-1 rounded">预警</span>
+                            </div>
+                        </div>
+
+                        <!-- 监测点3 -->
+                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-blue-50 transition cursor-pointer">
+                            <div class="flex items-center gap-3">
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                                <div>
+                                    <h4 class="text-sm font-medium">牧场C-牛棚监测点</h4>
+                                    <p class="text-xs text-slate-500">炭疽监测 · 正常</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-medium">38.2°C</p>
+                                <p class="text-xs text-slate-400">5分钟前</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右侧：行业情报 -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                    <div class="p-4 border-b border-slate-100 bg-gradient-to-r from-cyan-50 to-white">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-cyan-500 flex items-center justify-center">
+                                    <i data-lucide="newspaper" class="w-5 h-5 text-white"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-slate-800">行业情报中心</h3>
+                                    <p class="text-xs text-slate-500">全球资讯与研报</p>
+                                </div>
+                            </div>
+                            <a href="#" class="text-sm text-cyan-600 hover:text-cyan-700">更多</a>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 space-y-3">
+                        <!-- 资讯1 -->
+                        <div class="p-3 border border-slate-100 rounded-xl hover:border-cyan-200 hover:shadow-sm transition cursor-pointer">
+                            <div class="flex items-start gap-3">
+                                <span class="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded flex-shrink-0">热点</span>
+                                <div>
+                                    <h4 class="text-sm font-medium line-clamp-1">非洲猪瘟疫苗研究取得突破性进展</h4>
+                                    <p class="text-xs text-slate-500 mt-1">中国农业科学院 · 2小时前</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 资讯2 -->
+                        <div class="p-3 border border-slate-100 rounded-xl hover:border-cyan-200 hover:shadow-sm transition cursor-pointer">
+                            <div class="flex items-start gap-3">
+                                <span class="text-xs bg-blue-100 text-blue-600 px-2 py-0.5 rounded flex-shrink-0">政策</span>
+                                <div>
+                                    <h4 class="text-sm font-medium line-clamp-1">农业农村部发布新版动物防疫法实施细则</h4>
+                                    <p class="text-xs text-slate-500 mt-1">农业农村部 · 5小时前</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 资讯3 -->
+                        <div class="p-3 border border-slate-100 rounded-xl hover:border-cyan-200 hover:shadow-sm transition cursor-pointer">
+                            <div class="flex items-start gap-3">
+                                <span class="text-xs bg-purple-100 text-purple-600 px-2 py-0.5 rounded flex-shrink-0">研报</span>
+                                <div>
+                                    <h4 class="text-sm font-medium line-clamp-1">2025年全球人兽共患病市场分析报告</h4>
+                                    <p class="text-xs text-slate-500 mt-1">AI自动生成 · 今日</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 更多 -->
+                        <button class="w-full py-2 text-sm text-cyan-600 hover:bg-cyan-50 rounded-lg transition">
+                            查看更多行业资讯
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI 助理团队 -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="bot" class="w-6 h-6 text-blue-500"></i>
+                        <h3 class="font-semibold text-lg">北京畜牧兽医研究所 AI 助理团队</h3>
+                    </div>
+                    <a href="chat.html" class="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1">
+                        进入智能问答
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <!-- 采样专家 -->
+                    <div class="p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition cursor-pointer group">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center mb-3 group-hover:scale-110 transition agent-avatar">
+                            <i data-lucide="scan" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <h4 class="font-medium text-sm">采样专家·丁一</h4>
+                        <p class="text-xs text-slate-500 mt-1">气溶胶采样分析</p>
+                        <div class="mt-2 flex items-center gap-1">
+                            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                            <span class="text-xs text-green-600">监测中</span>
+                        </div>
+                    </div>
+
+                    <!-- 检测分析师 -->
+                    <div class="p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition cursor-pointer group">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center mb-3 group-hover:scale-110 transition agent-avatar">
+                            <i data-lucide="microscope" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <h4 class="font-medium text-sm">检测分析师·丁二</h4>
+                        <p class="text-xs text-slate-500 mt-1">微流控检测分析</p>
+                        <div class="mt-2 flex items-center gap-1">
+                            <span class="w-2 h-2 bg-amber-500 rounded-full"></span>
+                            <span class="text-xs text-amber-600">分析中</span>
+                        </div>
+                    </div>
+
+                    <!-- 情报专员 -->
+                    <div class="p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition cursor-pointer group">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center mb-3 group-hover:scale-110 transition agent-avatar">
+                            <i data-lucide="rss" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <h4 class="font-medium text-sm">情报专员·丁三</h4>
+                        <p class="text-xs text-slate-500 mt-1">全球资讯追踪</p>
+                        <div class="mt-2 flex items-center gap-1">
+                            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                            <span class="text-xs text-green-600">实时追踪</span>
+                        </div>
+                    </div>
+
+                    <!-- 研报生成器 -->
+                    <div class="p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition cursor-pointer group">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center mb-3 group-hover:scale-110 transition agent-avatar">
+                            <i data-lucide="file-text" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <h4 class="font-medium text-sm">研报助手·丁四</h4>
+                        <p class="text-xs text-slate-500 mt-1">自动研报生成</p>
+                        <div class="mt-2 flex items-center gap-1">
+                            <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+                            <span class="text-xs text-blue-600">待启动</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 数据可视化区域 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- 监测热力图 -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-400 to-red-500 flex items-center justify-center">
+                                <i data-lucide="map" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-slate-800">全国监测热力图</h3>
+                                <p class="text-xs text-slate-500">实时疫情分布与风险等级</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs">
+                            <span class="flex items-center gap-1"><span class="w-3 h-3 bg-green-400 rounded"></span>低风险</span>
+                            <span class="flex items-center gap-1"><span class="w-3 h-3 bg-amber-400 rounded"></span>中风险</span>
+                            <span class="flex items-center gap-1"><span class="w-3 h-3 bg-red-400 rounded"></span>高风险</span>
+                        </div>
+                    </div>
+
+                    <!-- 简化热力图网格 -->
+                    <div class="grid grid-cols-8 gap-1 p-4 bg-slate-50 rounded-xl">
+                        <!-- 生成热力图格子 -->
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-300 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-amber-300 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-amber-300 rounded relative overflow-hidden">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></span>
+                            </div>
+                        </div>
+                        <div class="heatmap-cell aspect-square bg-rose-300 rounded relative overflow-hidden">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="w-2 h-2 bg-rose-500 rounded-full animate-pulse"></span>
+                            </div>
+                        </div>
+                        <div class="heatmap-cell aspect-square bg-amber-300 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-300 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-300 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-amber-300 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                        <div class="heatmap-cell aspect-square bg-green-200 rounded"></div>
+                    </div>
+
+                    <div class="mt-4 flex items-center justify-between text-sm">
+                        <span class="text-slate-500">监测点总数: <span class="font-semibold text-slate-700">156</span></span>
+                        <span class="text-slate-500">异常点: <span class="font-semibold text-rose-600">3</span></span>
+                        <span class="text-slate-500">更新: <span class="font-semibold text-slate-700">刚刚</span></span>
+                    </div>
+                </div>
+
+                <!-- 趋势图表 -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center">
+                                <i data-lucide="trending-up" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-slate-800">监测数据趋势</h3>
+                                <p class="text-xs text-slate-500">近7天监测数据统计</p>
+                            </div>
+                        </div>
+                        <select class="text-xs border border-slate-200 rounded-lg px-2 py-1 bg-white">
+                            <option>近7天</option>
+                            <option>近30天</option>
+                            <option>近90天</option>
+                        </select>
+                    </div>
+
+                    <!-- 简化趋势图 -->
+                    <div class="relative h-48 bg-slate-50 rounded-xl p-4">
+                        <!-- 网格线 -->
+                        <div class="absolute inset-0 p-4 flex flex-col justify-between pointer-events-none">
+                            <div class="border-t border-slate-200 border-dashed"></div>
+                            <div class="border-t border-slate-200 border-dashed"></div>
+                            <div class="border-t border-slate-200 border-dashed"></div>
+                            <div class="border-t border-slate-200"></div>
+                        </div>
+
+                        <!-- 数据线条 - 使用 SVG -->
+                        <svg class="w-full h-full" viewBox="0 0 300 120" preserveAspectRatio="none">
+                            <!-- 监测点数量线 -->
+                            <polyline
+                                fill="none"
+                                stroke="#3b82f6"
+                                stroke-width="2"
+                                points="0,80 43,75 86,60 129,55 172,45 215,40 258,35 300,30"
+                                class="progress-bar"
+                            />
+                            
+                            <!-- 异常点数量线 -->
+                            <polyline
+                                fill="none"
+                                stroke="#f43f5e"
+                                stroke-width="2"
+                                stroke-dasharray="4,4"
+                                points="0,100 43,95 86,90 129,95 172,85 215,80 258,70 300,60"
+                                class="progress-bar"
+                            />
+                            
+                            <!-- 填充区域 -->
+                            <polygon
+                                fill="rgba(59, 130, 246, 0.1)"
+                                stroke="none"
+                                points="0,80 43,75 86,60 129,55 172,45 215,40 258,35 300,30 300,120 0,120"
+                            />
+
+                            <!-- 数据点 -->
+                            <circle cx="0" cy="80" r="3" fill="#3b82f6"/>
+                            <circle cx="86" cy="60" r="3" fill="#3b82f6"/>
+                            <circle cx="172" cy="45" r="3" fill="#3b82f6"/>
+                            <circle cx="258" cy="35" r="4" fill="#3b82f6" class="animate-pulse"/>
+                        </svg>
+
+                        <!-- X轴标签 -->
+                        <div class="absolute bottom-2 left-4 right-4 flex justify-between text-xs text-slate-400">
+                            <span>2/10</span>
+                            <span>2/12</span>
+                            <span>2/14</span>
+                            <span>今天</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 flex items-center justify-center gap-6 text-sm">
+                        <span class="flex items-center gap-2">
+                            <span class="w-3 h-0.5 bg-blue-500"></span>
+                            <span class="text-slate-600">监测点数量</span>
+                        </span>
+                        <span class="flex items-center gap-2">
+                            <span class="w-3 h-0.5 bg-rose-500 border-dashed" style="border-top: 2px dashed #f43f5e; height: 0;"></span>
+                            <span class="text-slate-600">异常点数量</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

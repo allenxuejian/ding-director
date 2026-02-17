@@ -12,7 +12,7 @@ import { siteRoutes } from './routes/sites';
 import { monitoringRoutes } from './routes/monitoring';
 import { alertRoutes } from './routes/alerts';
 import { reportRoutes } from './routes/reports';
-import { agentRoutes } from './routes/agents';
+import agentRoutes from './routes/agentRoutes';
 
 dotenv.config();
 
@@ -48,7 +48,7 @@ async function registerPlugins() {
   await app.register(swagger, {
     openapi: {
       info: {
-        title: '丁主任 API',
+        title: '北京畜牧兽医研究所 API',
         description: '智能疫病监测预警平台 API',
         version: '1.0.0'
       },
@@ -128,7 +128,7 @@ async function start() {
 
     await app.listen({ port, host });
     
-    app.log.info(`🚀 丁主任后端服务已启动`);
+    app.log.info(`🚀 北京畜牧兽医研究所后端服务已启动`);
     app.log.info(`📚 API文档: http://${host}:${port}/documentation`);
     app.log.info(`💚 健康检查: http://${host}:${port}/health`);
   } catch (err) {

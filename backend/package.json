@@ -1,16 +1,18 @@
 {
   "name": "ding-director-backend",
   "version": "1.0.0",
-  "description": "丁主任 - 智能疫病监测预警平台后端",
+  "description": "北京畜牧兽医研究所 - 智能疫病监测预警平台后端",
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "db:migrate": "node scripts/migrate.js",
-    "db:seed": "node scripts/seed.js",
+    "db:seed": "npx ts-node scripts/seed.ts",
+    "db:reset": "npx ts-node scripts/seed.ts",
     "test": "jest",
-    "lint": "eslint src/**/*.ts"
+    "test:api": "./scripts/test-api.sh",
+    "lint": "eslint src/**/*.ts",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@fastify/cors": "^8.4.0",

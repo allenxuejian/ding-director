@@ -1,5 +1,6 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { z } from 'zod';
+import { Op } from 'sequelize';
 import { MonitoringData, MonitoringSite } from '../models';
 
 // 创建监测数据验证
@@ -214,6 +215,3 @@ export async function monitoringRoutes(app: FastifyInstance) {
     }
   });
 }
-
-// 导入 Sequelize 操作符
-import { Op } from 'sequelize';

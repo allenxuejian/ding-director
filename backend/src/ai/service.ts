@@ -173,7 +173,7 @@ export async function chatCompletion(
       throw new Error(`AI request failed: ${response.status} - ${error}`);
     }
 
-    const data = await response.json();
+    const data: any = await response.json();
     const latency = Date.now() - startTime;
 
     return {

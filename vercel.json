@@ -1,6 +1,6 @@
 {
+  "name": "beijing-animal-vet-monitor",
   "version": 2,
-  "name": "mining-agent-prototype",
   "builds": [
     {
       "src": "**/*.html",

@@ -11,7 +11,7 @@ import {
   streamChat,
   clearConversation
 } from '../controllers/agentController';
-import { authenticate } from '../middlewares/auth';
+import { authenticate } from '../middleware/auth';
 
 export default async function agentRoutes(fastify: FastifyInstance) {
   // 公开路由
